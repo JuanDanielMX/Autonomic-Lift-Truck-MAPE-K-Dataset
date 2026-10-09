@@ -1,0 +1,820 @@
+[
+  {
+    "id": "tab_dash",
+    "type": "tab",
+    "label": "Dashboard + Self-Healing",
+    "disabled": false,
+    "info": "Project Node-RED flow for dashboard monitoring and Self-Healing logic. Hardware-dependent thresholds are configurable."
+  },
+  {
+    "id": "tab_opt",
+    "type": "tab",
+    "label": "Self-Optimization",
+    "disabled": false,
+    "info": "Project Node-RED implementation of the workload-to-speed law used by the Autonomic Lift Truck."
+  },
+  {
+    "id": "tab_aes",
+    "type": "tab",
+    "label": "AES-256-CBC Self-Protection",
+    "disabled": false,
+    "info": "Project AES-256-CBC encryption/decryption logic. The project passkey is not distributed; configure AES_KEY for repository use."
+  },
+  {
+    "id": "mqtt_cfg",
+    "type": "mqtt-broker",
+    "name": "Configure MQTT broker",
+    "broker": "localhost",
+    "port": "1883",
+    "clientid": "",
+    "autoConnect": true,
+    "usetls": false,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "autoUnsubscribe": true,
+    "birthTopic": "",
+    "birthQos": "0",
+    "birthPayload": "",
+    "birthMsg": {},
+    "closeTopic": "",
+    "closeQos": "0",
+    "closePayload": "",
+    "closeMsg": {},
+    "willTopic": "",
+    "willQos": "0",
+    "willPayload": "",
+    "willMsg": {}
+  },
+  {
+    "id": "ui_tab_main",
+    "type": "ui_tab",
+    "name": "Autonomic Lift Truck",
+    "icon": "dashboard",
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_group_main",
+    "type": "ui_group",
+    "name": "UI",
+    "tab": "ui_tab_main",
+    "order": 1,
+    "disp": true,
+    "width": "6",
+    "collapse": false,
+    "className": ""
+  },
+  {
+    "id": "odom_in",
+    "type": "mqtt in",
+    "z": "tab_dash",
+    "name": "/odom speed adapter",
+    "topic": "robot/odom_speed",
+    "qos": "0",
+    "datatype": "auto-detect",
+    "broker": "mqtt_cfg",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 140,
+    "y": 80,
+    "wires": [
+      [
+        "speed_num",
+        "odom_bool"
+      ]
+    ]
+  },
+  {
+    "id": "scan_in",
+    "type": "mqtt in",
+    "z": "tab_dash",
+    "name": "/scan motion adapter",
+    "topic": "robot/scan_motion",
+    "qos": "0",
+    "datatype": "auto-detect",
+    "broker": "mqtt_cfg",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 150,
+    "y": 160,
+    "wires": [
+      [
+        "scan_bool"
+      ]
+    ]
+  },
+  {
+    "id": "speed_num",
+    "type": "function",
+    "z": "tab_dash",
+    "name": "Speedometer",
+    "func": "const v = Number(msg.payload);\nif (!Number.isFinite(v)) return null;\nmsg.payload = v;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 380,
+    "y": 60,
+    "wires": [
+      [
+        "speed_gauge"
+      ]
+    ]
+  },
+  {
+    "id": "odom_bool",
+    "type": "function",
+    "z": "tab_dash",
+    "name": "A: odom threshold",
+    "func": "// Configure the odometry threshold for the target hardware environment.\nconst threshold = Number(env.get('ODOM_SPEED_THRESHOLD') || 0);\nconst v = Number(msg.payload);\nmsg.topic = 'A';\nmsg.payload = Number.isFinite(v) && Math.abs(v) > threshold;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 390,
+    "y": 100,
+    "wires": [
+      [
+        "join_ab"
+      ]
+    ]
+  },
+  {
+    "id": "scan_bool",
+    "type": "function",
+    "z": "tab_dash",
+    "name": "B: scan threshold",
+    "func": "// Configure the LiDAR/scan motion threshold for the target hardware environment.\nconst threshold = Number(env.get('SCAN_MOTION_THRESHOLD') || 0);\nconst v = Number(msg.payload);\nmsg.topic = 'B';\nmsg.payload = Number.isFinite(v) && Math.abs(v) > threshold;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 390,
+    "y": 160,
+    "wires": [
+      [
+        "join_ab"
+      ]
+    ]
+  },
+  {
+    "id": "join_ab",
+    "type": "join",
+    "z": "tab_dash",
+    "name": "Join A and B",
+    "mode": "custom",
+    "build": "object",
+    "property": "payload",
+    "propertyType": "msg",
+    "key": "topic",
+    "joiner": "\\n",
+    "joinerType": "str",
+    "accumulate": false,
+    "timeout": "1",
+    "count": "2",
+    "reduceRight": false,
+    "reduceExp": "",
+    "reduceInit": "",
+    "reduceInitType": "",
+    "reduceFixup": "",
+    "x": 600,
+    "y": 130,
+    "wires": [
+      [
+        "status_logic"
+      ]
+    ]
+  },
+  {
+    "id": "status_logic",
+    "type": "function",
+    "z": "tab_dash",
+    "name": "StatusAlert = A AND NOT B",
+    "func": "const A = Boolean(msg.payload.A);\nconst B = Boolean(msg.payload.B);\nmsg.payload = A && !B;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 820,
+    "y": 130,
+    "wires": [
+      [
+        "alert_led",
+        "alert_debug"
+      ]
+    ]
+  },
+  {
+    "id": "alert_led",
+    "type": "ui_template",
+    "z": "tab_dash",
+    "group": "ui_group_main",
+    "name": "Alert status LED",
+    "order": 4,
+    "width": 6,
+    "height": 1,
+    "format": "<div style=\"display:flex;align-items:center;justify-content:space-between;font-size:16px\"><span>Alert status</span><span style=\"width:18px;height:18px;border-radius:50%;display:inline-block;background:{{msg.payload ? '#d62728' : '#2ca02c'}};box-shadow:0 0 4px #555\"></span></div>",
+    "storeOutMessages": true,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1050,
+    "y": 110,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "alert_debug",
+    "type": "debug",
+    "z": "tab_dash",
+    "name": "StatusAlert",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1040,
+    "y": 160,
+    "wires": []
+  },
+  {
+    "id": "speed_gauge",
+    "type": "ui_gauge",
+    "z": "tab_dash",
+    "name": "Speed (m/s)",
+    "group": "ui_group_main",
+    "order": 1,
+    "width": 6,
+    "height": 4,
+    "gtype": "gage",
+    "title": "Speed (m/s)",
+    "label": "m/s",
+    "format": "{{value}}",
+    "min": 0,
+    "max": "0.3",
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#ca3838"
+    ],
+    "seg1": "",
+    "seg2": "",
+    "diff": false,
+    "className": "",
+    "x": 610,
+    "y": 60,
+    "wires": []
+  },
+  {
+    "id": "battery_in",
+    "type": "mqtt in",
+    "z": "tab_dash",
+    "name": "robot/battery",
+    "topic": "robot/battery",
+    "qos": "0",
+    "datatype": "auto-detect",
+    "broker": "mqtt_cfg",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 140,
+    "y": 250,
+    "wires": [
+      [
+        "battery_pct"
+      ]
+    ]
+  },
+  {
+    "id": "battery_pct",
+    "type": "function",
+    "z": "tab_dash",
+    "name": "Voltage to battery %",
+    "func": "// Convert battery voltage to dashboard percentage. Set voltage limits for the target battery/sensor calibration.\nconst fullV = Number(env.get('BATTERY_FULL_V') || 12.0);\nconst emptyV = Number(env.get('BATTERY_EMPTY_V') || 0.0);\nconst v = Number(msg.payload);\nif (!Number.isFinite(v) || fullV <= emptyV) return null;\nlet pct = 100 * (v - emptyV) / (fullV - emptyV);\npct = Math.max(0, Math.min(100, pct));\nmsg.payload = Math.round(pct * 100) / 100;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 250,
+    "wires": [
+      [
+        "battery_gauge"
+      ]
+    ]
+  },
+  {
+    "id": "battery_gauge",
+    "type": "ui_gauge",
+    "z": "tab_dash",
+    "name": "Battery Level",
+    "group": "ui_group_main",
+    "order": 2,
+    "width": 6,
+    "height": 4,
+    "gtype": "gage",
+    "title": "Battery Level",
+    "label": "%",
+    "format": "{{value}}",
+    "min": 0,
+    "max": "100",
+    "colors": [
+      "#e6b800",
+      "#e6e600",
+      "#00b500"
+    ],
+    "seg1": "",
+    "seg2": "",
+    "diff": false,
+    "className": "",
+    "x": 720,
+    "y": 250,
+    "wires": []
+  },
+  {
+    "id": "orders_in",
+    "type": "mqtt in",
+    "z": "tab_dash",
+    "name": "factory/orders",
+    "topic": "factory/orders",
+    "qos": "0",
+    "datatype": "auto-detect",
+    "broker": "mqtt_cfg",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 140,
+    "y": 320,
+    "wires": [
+      [
+        "orders_text"
+      ]
+    ]
+  },
+  {
+    "id": "orders_text",
+    "type": "ui_text",
+    "z": "tab_dash",
+    "group": "ui_group_main",
+    "order": 3,
+    "width": 6,
+    "height": 1,
+    "name": "Orders in queue",
+    "label": "Orders in queue",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "className": "",
+    "x": 410,
+    "y": 320,
+    "wires": []
+  },
+  {
+    "id": "demo_stuck_a",
+    "type": "inject",
+    "z": "tab_dash",
+    "name": "Demo A=0.10 m/s",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "0.10",
+    "payloadType": "num",
+    "x": 150,
+    "y": 420,
+    "wires": [
+      [
+        "speed_num",
+        "odom_bool"
+      ]
+    ]
+  },
+  {
+    "id": "demo_stuck_b",
+    "type": "inject",
+    "z": "tab_dash",
+    "name": "Demo B=0 (stuck)",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "0",
+    "payloadType": "num",
+    "x": 150,
+    "y": 460,
+    "wires": [
+      [
+        "scan_bool"
+      ]
+    ]
+  },
+  {
+    "id": "demo_batt",
+    "type": "inject",
+    "z": "tab_dash",
+    "name": "Demo battery=5 V",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "payload": "5",
+    "payloadType": "num",
+    "x": 150,
+    "y": 500,
+    "wires": [
+      [
+        "battery_pct"
+      ]
+    ]
+  },
+  {
+    "id": "opt_orders",
+    "type": "mqtt in",
+    "z": "tab_opt",
+    "name": "factory/orders",
+    "topic": "factory/orders",
+    "qos": "0",
+    "datatype": "auto-detect",
+    "broker": "mqtt_cfg",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 150,
+    "y": 100,
+    "wires": [
+      [
+        "speed_law"
+      ]
+    ]
+  },
+  {
+    "id": "speed_law",
+    "type": "function",
+    "z": "tab_opt",
+    "name": "Sf = 0.02 + 0.02 B",
+    "func": "// Workload-dependent speed law reported in the implementation.\n// Current manuscript notes B was limited to 10 during testing.\nlet B = Number(msg.payload);\nif (!Number.isFinite(B)) return null;\nconst maxB = Number(env.get('MAX_TEST_ORDERS') || 10);\nB = Math.max(0, Math.min(maxB, B));\nmsg.orders = B;\nmsg.payload = 0.02 + 0.02 * B;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 410,
+    "y": 100,
+    "wires": [
+      [
+        "opt_speed_gauge",
+        "opt_out",
+        "opt_debug"
+      ]
+    ]
+  },
+  {
+    "id": "opt_speed_gauge",
+    "type": "ui_gauge",
+    "z": "tab_opt",
+    "name": "Target Speed",
+    "group": "ui_group_main",
+    "order": 5,
+    "width": 6,
+    "height": 4,
+    "gtype": "gage",
+    "title": "Target Speed (m/s)",
+    "label": "m/s",
+    "format": "{{value}}",
+    "min": 0,
+    "max": "0.24",
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#ca3838"
+    ],
+    "seg1": "",
+    "seg2": "",
+    "diff": false,
+    "className": "",
+    "x": 680,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "opt_out",
+    "type": "mqtt out",
+    "z": "tab_opt",
+    "name": "robot/target_speed",
+    "topic": "robot/target_speed",
+    "qos": "0",
+    "retain": "false",
+    "respTopic": "",
+    "contentType": "",
+    "userProps": "",
+    "correl": "",
+    "expiry": "",
+    "broker": "mqtt_cfg",
+    "x": 690,
+    "y": 130,
+    "wires": []
+  },
+  {
+    "id": "opt_debug",
+    "type": "debug",
+    "z": "tab_opt",
+    "name": "Target speed",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 680,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "opt_demo1",
+    "type": "inject",
+    "z": "tab_opt",
+    "name": "Demo B=1",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "payload": "1",
+    "payloadType": "num",
+    "x": 140,
+    "y": 220,
+    "wires": [
+      [
+        "speed_law"
+      ]
+    ]
+  },
+  {
+    "id": "opt_demo5",
+    "type": "inject",
+    "z": "tab_opt",
+    "name": "Demo B=5",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "payload": "5",
+    "payloadType": "num",
+    "x": 140,
+    "y": 260,
+    "wires": [
+      [
+        "speed_law"
+      ]
+    ]
+  },
+  {
+    "id": "opt_demo10",
+    "type": "inject",
+    "z": "tab_opt",
+    "name": "Demo B=10",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "payload": "10",
+    "payloadType": "num",
+    "x": 150,
+    "y": 300,
+    "wires": [
+      [
+        "speed_law"
+      ]
+    ]
+  },
+  {
+    "id": "aes_inject",
+    "type": "inject",
+    "z": "tab_aes",
+    "name": "Demo plaintext: house",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "payload": "house",
+    "payloadType": "str",
+    "x": 160,
+    "y": 100,
+    "wires": [
+      [
+        "aes_encrypt"
+      ]
+    ]
+  },
+  {
+    "id": "aes_encrypt",
+    "type": "function",
+    "z": "tab_aes",
+    "name": "Encrypt AES-256-CBC",
+    "func": "// Project AES-256-CBC logic. The project passkey is not distributed in the repository.\n// Set AES_KEY to a 32-byte UTF-8 key before use.\nconst secret = env.get('AES_KEY');\nif (typeof secret !== 'string' || Buffer.byteLength(secret, 'utf8') !== 32) {\n    node.error('Set AES_KEY to an exactly 32-byte UTF-8 key for AES-256-CBC', msg);\n    return null;\n}\nconst algorithm = 'aes-256-cbc';\nconst iv = crypto.randomBytes(16);\nfunction encrypt(text) {\n    const cipher = crypto.createCipheriv(algorithm, Buffer.from(secret, 'utf8'), iv);\n    let encrypted = cipher.update(String(text), 'utf8', 'hex');\n    encrypted += cipher.final('hex');\n    return iv.toString('hex') + ':' + encrypted;\n}\nconst originalData = (typeof msg.payload === 'string') ? msg.payload : JSON.stringify(msg.payload);\nmsg.original_payload = originalData;\nmsg.payload = encrypt(originalData);\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [
+      {
+        "var": "crypto",
+        "module": "crypto"
+      }
+    ],
+    "x": 430,
+    "y": 100,
+    "wires": [
+      [
+        "aes_enc_debug",
+        "aes_mqtt_out"
+      ]
+    ]
+  },
+  {
+    "id": "aes_enc_debug",
+    "type": "debug",
+    "z": "tab_aes",
+    "name": "Encrypted payload",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 700,
+    "y": 70,
+    "wires": []
+  },
+  {
+    "id": "aes_mqtt_out",
+    "type": "mqtt out",
+    "z": "tab_aes",
+    "name": "Publish encrypted MQTT",
+    "topic": "autonomic_lift_truck/secure_demo",
+    "qos": "0",
+    "retain": "false",
+    "respTopic": "",
+    "contentType": "",
+    "userProps": "",
+    "correl": "",
+    "expiry": "",
+    "broker": "mqtt_cfg",
+    "x": 710,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "aes_mqtt_in",
+    "type": "mqtt in",
+    "z": "tab_aes",
+    "name": "Receive encrypted MQTT",
+    "topic": "autonomic_lift_truck/secure_demo",
+    "qos": "0",
+    "datatype": "auto-detect",
+    "broker": "mqtt_cfg",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 190,
+    "y": 220,
+    "wires": [
+      [
+        "aes_decrypt"
+      ]
+    ]
+  },
+  {
+    "id": "aes_decrypt",
+    "type": "function",
+    "z": "tab_aes",
+    "name": "Decrypt AES-256-CBC",
+    "func": "// Decrypt iv:ciphertext payload generated by the project AES-256-CBC node.\nconst secret = env.get('AES_KEY');\nif (typeof secret !== 'string' || Buffer.byteLength(secret, 'utf8') !== 32) {\n    node.error('Set AES_KEY to an exactly 32-byte UTF-8 key for AES-256-CBC', msg);\n    return null;\n}\nconst algorithm = 'aes-256-cbc';\nfunction decrypt(text) {\n    const textParts = String(text).split(':');\n    if (textParts.length < 2) throw new Error('Expected iv:ciphertext hex payload');\n    const iv = Buffer.from(textParts.shift(), 'hex');\n    const encryptedText = textParts.join(':');\n    const decipher = crypto.createDecipheriv(algorithm, Buffer.from(secret, 'utf8'), iv);\n    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');\n    decrypted += decipher.final('utf8');\n    return decrypted;\n}\ntry {\n    msg.encrypted_payload = msg.payload;\n    msg.payload = decrypt(msg.payload);\n    return msg;\n} catch (err) {\n    node.error(err.message, msg);\n    return null;\n}",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [
+      {
+        "var": "crypto",
+        "module": "crypto"
+      }
+    ],
+    "x": 470,
+    "y": 220,
+    "wires": [
+      [
+        "aes_dec_debug",
+        "aes_text"
+      ]
+    ]
+  },
+  {
+    "id": "aes_dec_debug",
+    "type": "debug",
+    "z": "tab_aes",
+    "name": "Decrypted payload",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 730,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "aes_text",
+    "type": "ui_text",
+    "z": "tab_aes",
+    "group": "ui_group_main",
+    "order": 6,
+    "width": 6,
+    "height": 1,
+    "name": "Decrypted value",
+    "label": "Decrypted value",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "className": "",
+    "x": 720,
+    "y": 250,
+    "wires": []
+  }
+]

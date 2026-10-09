@@ -1,0 +1,17 @@
+category,technology_or_enabler,flexibility,adaptability,digitization,source
+HCAI,Decision-support tools for human-machine collaboration,1,0,1,Project literature-review mapping reported in manuscript Table 4
+HRC,"Advanced robotics (cobots, AGVs) + reconfigurable automation",1,0,0,Project literature-review mapping reported in manuscript Table 4
+HA&RPA,Modular/reconfigurable manufacturing systems,1,0,0,Project literature-review mapping reported in manuscript Table 4
+IAI,"AI / ML (e.g., dynamic scheduling, customization)",1,1,0,Project literature-review mapping reported in manuscript Table 4
+ICPE,Industrial IoT + smart sensors,1,0,1,Project literature-review mapping reported in manuscript Table 4
+ICPE,CPS/CPPS (cyber-physical production systems),1,0,1,Project literature-review mapping reported in manuscript Table 4
+ICPE,Digital Twins (DT),1,1,1,Project literature-review mapping reported in manuscript Table 4
+ICPE,Cloud/edge computing + big data platforms,1,1,1,Project literature-review mapping reported in manuscript Table 4
+ICPE,Additive manufacturing (3D printing),1,0,0,Project literature-review mapping reported in manuscript Table 4
+ICPE,AR/VR + simulation (incl. virtual commissioning/training/remote),1,1,1,Project literature-review mapping reported in manuscript Table 4
+ICPE,MES/ERP/PLM integration (vertical integration),1,0,1,Project literature-review mapping reported in manuscript Table 4
+ICPE,Industrial networks + edge/fog + cloud computing (connectivity fabric),0,0,1,Project literature-review mapping reported in manuscript Table 4
+ICPE,Cybersecurity (for highly connected environments),0,0,1,Project literature-review mapping reported in manuscript Table 4
+ICPE,OT-IT integration through standardized protocols/platforms,0,0,1,Project literature-review mapping reported in manuscript Table 4
+ICPE,Real-time feedback loops using IoT/CPS data,0,1,1,Project literature-review mapping reported in manuscript Table 4
+DAM,Multi-agent systems enabling distributed decision-making/self-organizing production lines,0,1,1,Project literature-review mapping reported in manuscript Table 4

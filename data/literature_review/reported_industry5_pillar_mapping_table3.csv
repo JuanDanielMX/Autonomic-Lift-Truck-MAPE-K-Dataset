@@ -1,0 +1,26 @@
+category,technology_or_key_enabler,human_centricity,sustainability,resilience,source
+HCAI,Human-in-the-loop (HITL) decision & control / “humans in control”,1,1,1,Project literature-review mapping reported in manuscript Table 3
+HCAI,"Explainability, transparency, trust (XAI)",1,0,1,Project literature-review mapping reported in manuscript Table 3
+HCAI,Co-creation / operator participation in design and tuning,1,1,0,Project literature-review mapping reported in manuscript Table 3
+HCAI,Embodied AI,1,0,1,Project literature-review mapping reported in manuscript Table 3
+HRC,"Cobots and safe physical collaboration (safety-by-design, ergonomics)",1,1,1,Project literature-review mapping reported in manuscript Table 3
+HRC,Cognitive collaboration and workload sharing (shared workload),1,0,1,Project literature-review mapping reported in manuscript Table 3
+HRC,Adaptive teaming and task reconfiguration,1,0,1,Project literature-review mapping reported in manuscript Table 3
+HRC,Human-robot teaming + Digital Twins + ML synergy,1,1,0,Project literature-review mapping reported in manuscript Table 3
+HA&RPA,AI + IoT for operational automation (Hyperautomation / RPA framing),0,1,0,Project literature-review mapping reported in manuscript Table 3
+IAI,Predictive/prescriptive analytics + anomaly detection,0,1,1,Project literature-review mapping reported in manuscript Table 3
+IAI,Industrial analytics (predictive/prescriptive) and adaptive control,0,1,1,Project literature-review mapping reported in manuscript Table 3
+IAI,AI-driven predictive / resilience-based maintenance (Maintenance 5.0),0,1,1,Project literature-review mapping reported in manuscript Table 3
+IAI,"Optimization (efficiency, energy, waste, circularity)",0,1,0,Project literature-review mapping reported in manuscript Table 3
+IAI,Federated Learning (FL) for distributed environments,0,1,1,Project literature-review mapping reported in manuscript Table 3
+ICPE,CPPS/CPS (cyber-physical production systems),0,1,1,Project literature-review mapping reported in manuscript Table 3
+ICPE,IIoT (Industrial Internet of Things),0,1,1,Project literature-review mapping reported in manuscript Table 3
+ICPE,Digital Twins (DT),0,1,1,Project literature-review mapping reported in manuscript Table 3
+ICPE,"Remote assistance, operator training, intuitive interfaces",0,0,1,Project literature-review mapping reported in manuscript Table 3
+ICPE,Semantic/knowledge infrastructure (Knowledge Graph / semantic layer),0,0,1,Project literature-review mapping reported in manuscript Table 3
+Intralogistics,AI-powered inventory management and predictive logistics,0,1,1,Project literature-review mapping reported in manuscript Table 3
+Intralogistics,Automated sorting systems (waste reduction / material flow),0,1,0,Project literature-review mapping reported in manuscript Table 3
+Intralogistics,AGVs (Automated Guided Vehicles) in resilient service/production systems,0,1,1,Project literature-review mapping reported in manuscript Table 3
+Intralogistics,Supply-chain/logistics resilience (principles and strategies),0,0,1,Project literature-review mapping reported in manuscript Table 3
+DAM,Blockchain-enabled traceability and transparency,0,1,1,Project literature-review mapping reported in manuscript Table 3
+DAM,Distributed control and recovery across networks of plants,0,0,1,Project literature-review mapping reported in manuscript Table 3

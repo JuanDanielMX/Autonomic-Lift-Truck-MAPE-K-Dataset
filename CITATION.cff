@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this dataset, please cite the associated manuscript."
+title: "Minimal Dataset: Bridging Smart Factory and Industry 5.0: A MAPE-K Autonomic Intralogistics Mobile Robot"
+type: dataset
+version: 1.1.0
+date-released: 2026-10-08
+authors:
+  - family-names: "Marín-Segura"
+    given-names: "Juan Daniel"
+  - family-names: "Carrillo-Martinez"
+    given-names: "Luis Antonio"
+  - family-names: "Hernández"
+    given-names: "Debbie"
+  - family-names: "Cortes-Santacruz"
+    given-names: "Froylan"
+  - family-names: "Fortoul-Diaz"
+    given-names: "Jesus Anselmo"
+notes: "Associated manuscript ID: machines-4629373."

@@ -1,0 +1,8 @@
+component,ownership,included_in_repository,source_or_note
+ros_autonomous_slam,Third-party,No,https://github.com/fazildgr8/ros_autonomous_slam.git
+ROS Noetic,Third-party,No,ROS distribution used by the project
+TurtleBot3 packages,Third-party,No,Standard TurtleBot3 ROS packages
+Dynamixel SDK,Third-party,No,ROBOTIS Dynamixel SDK
+Node-RED,Third-party,No,Node-RED runtime
+node-red-dashboard,Third-party,No,Dashboard nodes required by flows.json
+Node.js crypto,Third-party standard library,No,Built-in Node.js module used by AES-256-CBC Function nodes

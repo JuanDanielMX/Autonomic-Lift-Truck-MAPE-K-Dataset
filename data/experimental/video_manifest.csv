@@ -1,0 +1,8 @@
+repository_path,original_filename,capability,duration_s,width_px,height_px,sha256,description
+evidence/videos/self_configuration_rviz_mapping.mp4,grabacionsc.mp4,Self-Configuration,32.343,894,550,85eb750003bf165189a77e10d1ba2a00c7bcb076685df56dd437d46713a177b4,Project video demonstrating RViz mapping / map updates.
+evidence/videos/self_healing_dashboard_alert_demo_1.mp4,grabacion 1.mp4,Self-Healing,53.063,836,424,6cce153737ce22cedad6fd4f1399b483763a53082aabdc10e5974dba41f4c02f,Project dashboard video showing speed and virtual alert LED state.
+evidence/videos/self_healing_dashboard_alert_demo_2.mp4,grabacion2.mp4,Self-Healing,19.263,808,418,5a6b93b264082f0cd7080b9977b3fbb3c77f389ee5f3dbb9d093e4f8f577bc16,Project dashboard video showing transition to stuck/red alert.
+evidence/videos/self_optimization_dashboard_demo_1.mp4,so1.mp4,Self-Optimization,138.023,320,596,92dc01078fab4f937ccdbcd1ac3833b620811a3a8f496c71eba045c3eba79994,"Project dashboard video showing speed, battery level, queue orders, and alert status."
+evidence/videos/self_optimization_dashboard_demo_2.mp4,so2.mp4,Self-Optimization,73.343,314,594,cbd86f1410f21b0b1ec260589f5157f46e05442db0eecd46b244b0981866dd52,"Project dashboard video showing speed, battery level, queue orders, and alert status."
+evidence/videos/self_protection_slam_obstacle_avoidance.mp4,SPvideo.mp4,Self-Protection,50.303,894,614,461d46694fe57c677307b6087e535bdd7e00d4898e991ee69c7ea6a3322adbde,Project RViz/SLAM video showing environmental map updates used for obstacle-aware operation.
+evidence/videos/additional_dashboard_alert_demo.mp4,toma final.mp4,Supporting evidence,13.703,886,428,201ba34bb3236606ee19318fca46fcf6d70bcf0f32c9501d2c6bf79e1d9a0fee,Project short dashboard demonstration retained as supporting evidence.

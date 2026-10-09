@@ -1,0 +1,7 @@
+database,analysis_scope,search_string
+Scopus,Industry 5.0,"TITLE(""Industry 5.0"") AND TITLE-ABS-KEY( (""human-centric*"" OR ""human centric*"" OR ""human centricity"" OR ""human-centered"" OR ""human centred"") AND (""sustainab*"" OR ""sustainability"") AND (""resilien*"" OR ""resilience""))"
+Scopus,Smart Factory,"TITLE-ABS-KEY( (""smart factory"" OR ""smart factories"" OR ""smart manufacturing"" OR ""intelligent manufacturing"") AND (flexib* OR adaptab* OR digitization))"
+Web of Science,Industry 5.0,"Industry 5.0 (Title) AND (""human centric*"" OR ""human-centric*"" OR ""human centricity"") (All Fields) AND sustainab* (All Fields) AND resilien* (All Fields)"
+Web of Science,Smart Factory,"(""smart factory"" OR ""smart factories"" OR ""smart manufacturing"" OR ""intelligent manufacturing"") (Title) AND (flexib* OR adaptab* OR digitization) (All Fields)"
+IEEE Xplore,Industry 5.0,"(""Industry 5.0"") AND (""human centric"" OR ""human-centric"" OR ""human centricity"" OR ""human-centered"" OR ""human centred"") AND (sustainab* OR sustainability) AND (resilien* OR resilience)"
+IEEE Xplore,Smart Factory,"(""smart factory"" OR ""smart factories"" OR ""smart manufacturing"" OR ""intelligent manufacturing"") AND (flexib* OR adaptab* OR digitization)"

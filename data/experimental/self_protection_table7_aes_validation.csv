@@ -1,0 +1,7 @@
+variable,original_value,encrypted_payload_reported,decrypted_value,source
+Speed (m/s),0.0421475297843651,51eef1c1e51c97b70b61d3b3ea82ee7f:89cacadd91ddf230662b6b2d23749c6cce34a585d76d0a12d47c2f47b0eefbdf,0.0421475297843651,Project AES-256-CBC validation reported in manuscript Table 7; project passkey not distributed
+Orders in queue,5,8d5070e9f75c5f8ce7edd6ed772fc036:18db3fa5f2fde8ab6d27c5424a0c1a61,5,Project AES-256-CBC validation reported in manuscript Table 7; project passkey not distributed
+Alert status,False,997c50b94d7bba680ce78c508ea844fa:905df69b6a7349d98589739bb48c9680,False,Project AES-256-CBC validation reported in manuscript Table 7; project passkey not distributed
+Battery level (%),82,80a5771ca3a6985e1d4a3a31a9ecf708:a1b4ed58da68a5e6f2752b3f15ab3c77,82,Project AES-256-CBC validation reported in manuscript Table 7; project passkey not distributed
+Figure,house,cf7bb809fa03a9a584bb9c3721ad4687:683222982304b55bbeab683a0de6ae5d,house,Project AES-256-CBC validation reported in manuscript Table 7; project passkey not distributed
+Assembly status,pending,f12e8311f509948f754e2640d187c1eb:faacf046032321fd822b9c99e33d076b,pending,Project AES-256-CBC validation reported in manuscript Table 7; project passkey not distributed

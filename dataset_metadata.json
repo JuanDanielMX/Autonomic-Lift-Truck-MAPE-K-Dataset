@@ -1,0 +1,12 @@
+{
+  "dataset_title": "Minimal Dataset: Bridging Smart Factory and Industry 5.0: A MAPE-K Autonomic Intralogistics Mobile Robot",
+  "manuscript_id": "machines-4629373",
+  "version": "1.1.0",
+  "date": "2026-10-08",
+  "data_availability_statement": "The raw data supporting the conclusions of this article will be made available by the authors on request.",
+  "ownership_terms": {
+    "Project-owned": "Project data, software, media, analysis, or documentation included in this repository",
+    "Third-party": "External dependencies identified separately and not presented as project-owned source code"
+  },
+  "security_note": "The project AES passkey is not distributed. Repository/testing flow uses AES_KEY supplied through the environment."
+}
