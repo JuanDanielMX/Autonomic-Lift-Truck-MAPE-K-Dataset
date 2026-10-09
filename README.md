@@ -10,7 +10,7 @@ This package consolidates the project data, software, experimental media, and re
 
 > The raw data supporting the conclusions of this article will be made available by the authors on request.
 
-This repository is intended to provide the minimal supporting dataset requested during editorial processing and can also be uploaded to GitHub for dissemination.
+This repository provides the minimal supporting dataset requested during editorial processing and is publicly hosted on GitHub for dissemination.
 
 ## Repository structure
 
