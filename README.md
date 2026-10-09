@@ -131,6 +131,12 @@ See also:
 - `docs/EVIDENCE_MAP.md`
 - `DATASET_MANIFEST.csv`
 
+## License
+
+Project-owned research data, CSV files, documentation, figures, images, and experimental media are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Project-developed software in `analysis/`, `node-red/`, and `software/project/` is licensed under the MIT License; each directory contains the complete MIT license text in `LICENSE`. Documentation and CSV files in those directories remain under CC BY 4.0.
+
+Third-party dependencies retain their respective licenses and are not relicensed. See [LICENSE.md](LICENSE.md) for the complete licensing structure and [software/THIRD_PARTY.md](software/THIRD_PARTY.md) and [software/DEPENDENCIES.csv](software/DEPENDENCIES.csv) for dependency information.
+
 ## Authors
 
 Juan Daniel Marín-Segura; Luis Antonio Carrillo-Martinez; Debbie Hernández; Froylan Cortes-Santacruz; Jesus Anselmo Fortoul-Diaz.
